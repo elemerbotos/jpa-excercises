@@ -1,5 +1,6 @@
 package com.epam.training.jp.jpa.excercises.dao.jpaimpl;
 
+import java.util.Date;
 import java.util.List;
 
 import com.epam.training.jp.jpa.excercises.dao.MenuDao;
@@ -10,16 +11,19 @@ public class JpaMenuDao extends GenericJpaDao implements MenuDao {
 
 	@Override
 	public List<Menu> getActualMenus() {
-		//TODO: implement, use JPQL query
-		throw new UnsupportedOperationException();
-
+		List<Menu> menus = entityManager
+				.createQuery("select m from Menu m where :now >= m.fromDate and :now <= m.toDate", Menu.class)
+				.setParameter("now", new Date())
+				.getResultList();
+		for (Menu menu : menus) {
+			menu.getFoods().size();
+		}
+		return menus;
 	}
 
 	@Override
 	public Food findFoodById(int foodId) {
-		//TODO: implement
-		throw new UnsupportedOperationException();
-
+		return entityManager.find(Food.class, foodId);
 	}
 
 }
